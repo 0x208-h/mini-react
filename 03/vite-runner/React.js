@@ -33,6 +33,7 @@ function createElement(type, props, ...children) {
 }
 
 let nextWorkOfUnit = null;
+let root = null;
 // v4
 /**
  *
@@ -41,6 +42,7 @@ let nextWorkOfUnit = null;
  */
 function render(node, container) {
   nextWorkOfUnit = { dom: container, props: { children: [node] } };
+  root = nextWorkOfUnit;
   // // 生成dom
   // const dom =
   //   node.type === "TEXT_ELEMENT"
@@ -97,12 +99,14 @@ function performWorkOfUnit(fiber) {
   if (!fiber.dom) {
     // 1. 创建dom
     const dom = (fiber.dom = createDom(fiber.type));
-    fiber.parent.dom.append(dom);
+    // fiber.parent.dom.append(dom);
     // 2. 处理props
-    updateProps(fiber.dom, fiber.props);
+    updateProps(dom, fiber.props);
   }
   // 3. 转换链表
   initChildren(fiber);
+
+  console.log(fiber, "fiber");
 
   // 4. 返回下一个任务
   if (fiber.child) {
@@ -121,13 +125,32 @@ function performWorkOfUnit(fiber) {
   // return fiber.parent.sibling;
 }
 
+function commitWork(fiber) {
+  if (!fiber) {
+    return;
+  }
+  fiber.parent.dom.append(fiber.dom);
+  commitWork(fiber.child);
+  commitWork(fiber.sibling);
+}
+
 function workLoop(deadLine) {
   let shouldYield = false;
   while (!shouldYield && nextWorkOfUnit) {
     nextWorkOfUnit = performWorkOfUnit(nextWorkOfUnit);
     shouldYield = deadLine.timeRemaining() < 1;
   }
+  if (!nextWorkOfUnit && root) {
+    // 最后一个节点
+    commitRoot();
+  }
   requestIdleCallback(workLoop);
+}
+
+function commitRoot() {
+  console.log(root, "root");
+  commitWork(root.child);
+  root = null;
 }
 
 requestIdleCallback(workLoop);
