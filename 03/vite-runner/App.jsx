@@ -1,13 +1,17 @@
 import React from "./React.js";
-// const App = React.createElement(
-//   "div",
-//   { id: "app" },
-//   "hello-",
-//   "mini-",
-//   "react"
-// );
 
-const App = <div>111</div>;
+function Counter() {
+  return <div>count</div>;
+}
+
+const App = () => {
+  return (
+    <div>
+      111
+      <Counter />
+    </div>
+  );
+};
 const AppOne = () => {
   return <div>222</div>;
 };
