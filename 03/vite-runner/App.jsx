@@ -1,14 +1,14 @@
 import React from "./React.js";
 
-function Counter() {
-  return <div>count</div>;
+function Counter({ num }) {
+  return <div>count: {num}</div>;
 }
 
 const App = () => {
   return (
     <div>
       111
-      <Counter />
+      <Counter num={10} />
     </div>
   );
 };

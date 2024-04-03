@@ -25,9 +25,12 @@ function createElement(type, props, ...children) {
     type,
     props: {
       ...props,
-      children: children.map((child) =>
-        typeof child === "string" ? createTextNode(child) : child
-      ),
+      children: children.map((child) => {
+        console.log(child, "child");
+        const isTextNode =
+          typeof child === "string" || typeof child === "number";
+        return isTextNode ? createTextNode(child) : child;
+      }),
     },
   };
 }
@@ -43,21 +46,6 @@ let root = null;
 function render(node, container) {
   nextWorkOfUnit = { dom: container, props: { children: [node] } };
   root = nextWorkOfUnit;
-  // // 生成dom
-  // const dom =
-  //   node.type === "TEXT_ELEMENT"
-  //     ? document.createTextNode("app")
-  //     : document.createElement(node.type);
-  // // 添加属性
-  // Object.keys(node.props).forEach((key) => {
-  //   if (key !== "children") {
-  //     dom[key] = node.props[key];
-  //   }
-  // });
-  // const children = node.props.children;
-  // children.forEach((child) => render(child, dom));
-  // // append
-  // container.append(dom);
 }
 
 function createDom(type) {
@@ -81,10 +69,11 @@ function initChildren(fiber, children) {
       type: child.type,
       props: child.props,
       child: null,
-      sibling: null,
       parent: fiber,
+      sibling: null,
       dom: null,
     };
+
     if (index === 0) {
       fiber.child = newFiber;
     } else {
@@ -106,19 +95,18 @@ function performWorkOfUnit(fiber) {
     }
   }
   // 3. 转换链表
-  const children = isFunctionComponent ? [fiber.type()] : fiber.props.children;
+  const children = isFunctionComponent
+    ? [fiber.type(fiber.props)]
+    : fiber.props.children;
   initChildren(fiber, children);
 
-  console.log(fiber, "fiber");
+  // console.log(fiber, "fiber");
 
   // 4. 返回下一个任务
   if (fiber.child) {
     return fiber.child;
   }
-  if (fiber.sibling) {
-    return fiber.sibling;
-  }
-  let parent = fiber.parent;
+  let parent = fiber;
   while (parent) {
     if (parent.sibling) {
       return parent.sibling;
@@ -157,7 +145,7 @@ function workLoop(deadLine) {
 }
 
 function commitRoot() {
-  console.log(root, "root");
+  // console.log(root, "root");
   commitWork(root.child);
   root = null;
 }
