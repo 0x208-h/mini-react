@@ -1,21 +1,36 @@
 import React from "./React.js";
 
+let count = 10;
+let props = { id: "11111111111" };
 function Counter({ num }) {
-  return <div>count: {num}</div>;
-}
-
-const App = () => {
+  // update
+  function handleClick() {
+    console.log("click");
+    count++;
+    props = {};
+    React.update();
+  }
   return (
-    <div>
-      111
-      <Counter num={10} />
+    <div {...props}>
+      count: {count}
+      <button onClick={handleClick}>click</button>
     </div>
   );
-};
-const AppOne = () => {
-  return <div>222</div>;
-};
+}
 
-console.log(AppOne);
+function CounterContainer() {
+  return <Counter></Counter>;
+}
+
+function App() {
+  return (
+    <div>
+      hi-mini-react
+      <Counter num={10}></Counter>
+      {/* <Counter num={20}></Counter> */}
+      {/* <CounterContainer></CounterContainer> */}
+    </div>
+  );
+}
 
 export default App;
