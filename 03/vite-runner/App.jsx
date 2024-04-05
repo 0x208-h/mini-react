@@ -13,15 +13,24 @@ function Counter({ num }) {
     React.update();
   }
 
-  const a = <div> 111</div>;
-  // const b = <p>222</p>;
+  const a = (
+    <div>
+      11
+      <div>
+        11111
+        <div>child</div>
+      </div>
+    </div>
+  );
+  const b = <div>222</div>;
   const C = () => <p>333</p>;
 
   return (
     <div {...props}>
       count: {count}
-      {isShow ? a : <C />}
+      {/* {isShow ? a : <C />} */}
       <button onClick={handleClick}>click</button>
+      {!isShow ? a : b}
     </div>
   );
 }
