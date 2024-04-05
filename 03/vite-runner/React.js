@@ -53,9 +53,23 @@ function workLoop(deadline) {
 }
 
 function commitRoot() {
+  deletions.forEach(commitDeletion);
   commitWork(wipRoot.child);
   currentRoot = wipRoot;
+  deletions = [];
   wipRoot = null;
+}
+
+function commitDeletion(fiber) {
+  if (fiber.dom) {
+    let fiberParent = fiber.parent;
+    while (!fiberParent.dom) {
+      fiberParent = fiberParent.parent;
+    }
+    fiberParent.dom.removeChild(fiber.dom);
+  } else {
+    commitDeletion(fiber.child);
+  }
 }
 
 function commitWork(fiber) {
@@ -121,7 +135,7 @@ function updateProps(dom, nextProps, prevProps) {
     }
   });
 }
-
+let deletions = [];
 function reconcileChildren(fiber, children) {
   let oldFiber = fiber.alternate?.child;
   let prevChild = null;
@@ -151,8 +165,10 @@ function reconcileChildren(fiber, children) {
         dom: null,
         effectTag: "placement",
       };
+      if (oldFiber) {
+        deletions.push(oldFiber);
+      }
     }
-
     if (oldFiber) {
       oldFiber = oldFiber.sibling;
     }
