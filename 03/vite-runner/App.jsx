@@ -31,6 +31,7 @@ function Counter({ num }) {
       {/* {isShow ? a : <C />} */}
       <button onClick={handleClick}>click</button>
       {!isShow ? a : b}
+      {isShow && <C />}
     </div>
   );
 }
