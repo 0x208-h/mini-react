@@ -3,6 +3,43 @@ import React from "./React.js";
 let count = 10;
 let props = { id: "11111111111" };
 let isShow = false;
+let acount = 0;
+let bcount = 1;
+
+const A = () => {
+  console.log("a run");
+  const handleClick = () => {
+    acount++;
+    React.update()();
+  };
+  return (
+    <div>
+      {acount}
+      <button onClick={handleClick}>click</button>
+      <div>
+        11111
+        <div>child</div>
+      </div>
+    </div>
+  );
+};
+const B = () => {
+  console.log("b run");
+  const handleClick = () => {
+    bcount++;
+    React.update()();
+  };
+  return (
+    <div>
+      {bcount}
+      <button onClick={handleClick}>click</button>
+      <div>
+        11111
+        <div>child</div>
+      </div>
+    </div>
+  );
+};
 function Counter({ num }) {
   // update
   function handleClick() {
@@ -13,16 +50,6 @@ function Counter({ num }) {
     React.update();
   }
 
-  const a = (
-    <div>
-      11
-      <div>
-        11111
-        <div>child</div>
-      </div>
-    </div>
-  );
-  const b = <div>222</div>;
   const C = () => <p>333</p>;
 
   return (
@@ -30,7 +57,8 @@ function Counter({ num }) {
       count: {count}
       {/* {isShow ? a : <C />} */}
       <button onClick={handleClick}>click</button>
-      {!isShow ? a : b}
+      <A />
+      <B />
       {isShow && <C />}
     </div>
   );
