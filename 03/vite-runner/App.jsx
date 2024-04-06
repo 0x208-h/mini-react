@@ -1,20 +1,23 @@
 import React from "./React.js";
 
-let count = 10;
+// let count = 10;
 let props = { id: "11111111111" };
-let isShow = false;
-let acount = 0;
-let bcount = 1;
+// let isShow = false;
+// let acount = 0;
+// let bcount = 1;
 
 const A = () => {
+  const [count, setCount] = React.useState(0);
+  const [bar, setBar] = React.useState("bar");
   console.log("a run");
   const handleClick = () => {
-    acount++;
-    React.update()();
+    setCount((c) => c + 1);
+    setBar((s) => s + "bar");
   };
   return (
     <div>
-      {acount}
+      {count}
+      <div>{bar}</div>
       <button onClick={handleClick}>click</button>
       <div>
         11111
@@ -23,43 +26,43 @@ const A = () => {
     </div>
   );
 };
-const B = () => {
-  console.log("b run");
-  const handleClick = () => {
-    bcount++;
-    React.update()();
-  };
-  return (
-    <div>
-      {bcount}
-      <button onClick={handleClick}>click</button>
-      <div>
-        11111
-        <div>child</div>
-      </div>
-    </div>
-  );
-};
+// const B = () => {
+//   console.log("b run");
+//   const handleClick = () => {
+//     bcount++;
+//     React.update()();
+//   };
+//   return (
+//     <div>
+//       {bcount}
+//       <button onClick={handleClick}>click</button>
+//       <div>
+//         11111
+//         <div>child</div>
+//       </div>
+//     </div>
+//   );
+// };
 function Counter({ num }) {
   // update
-  function handleClick() {
-    console.log("click");
-    // count++;
-    // props = {};
-    isShow = !isShow;
-    React.update();
-  }
+  // function handleClick() {
+  //   console.log("click");
+  //   // count++;
+  //   // props = {};
+  //   isShow = !isShow;
+  //   React.update();
+  // }
 
   const C = () => <p>333</p>;
 
   return (
     <div {...props}>
-      count: {count}
+      {/* count: {count} */}
       {/* {isShow ? a : <C />} */}
-      <button onClick={handleClick}>click</button>
+      {/* <button onClick={handleClick}>click</button> */}
       <A />
-      <B />
-      {isShow && <C />}
+      {/* <B /> */}
+      {/* {isShow && <C />} */}
     </div>
   );
 }
