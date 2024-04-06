@@ -11,8 +11,8 @@ const A = () => {
   const [bar, setBar] = React.useState("bar");
   console.log("a run");
   const handleClick = () => {
-    setCount((c) => c + 1);
-    setBar((s) => s + "bar");
+    // setCount((c) => c + 1);
+    setBar(() => "bar");
   };
   return (
     <div>
